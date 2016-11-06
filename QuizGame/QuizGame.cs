@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuizGame
 {
-    class Player
+   public class Player
     {
         public string name;
         public int score;
@@ -18,7 +18,7 @@ namespace QuizGame
         }
 
     }
-    class Question
+    public class Question
     {
         public string question;
         public int answer;
@@ -33,7 +33,7 @@ namespace QuizGame
             this.difficulty = difficulty;  
         }
     }
-    class FileReader
+    public class FileReader
     {
         public int line;
         public int questionQuantity;
@@ -50,15 +50,17 @@ namespace QuizGame
             var reader = new StreamReader(File.OpenRead(path));
             int questAdded = 0;
             List<Question> questionsList = new List<Question>();
-            while (!reader.EndOfStream || questAdded > questionQuantity)
+            string line;
+            while (!reader.EndOfStream || questAdded < questionQuantity)
             {
-                var line = reader.ReadLine();
-                var values = line.Split(';');
+                 line = reader.ReadLine();
+               
+                string[] values = line.Split(';');
 
-                if((Convert.ToInt32(values[5]) == gameDifficulty))
+                if((Convert.ToInt32(values[6]) == gameDifficulty))
                 {
                     string[] distractors = new string[] { values[2], values[3], values[4], values[5] };
-                    Question q = new Question(values[0], Convert.ToInt32(values[1]), distractors, Convert.ToInt32(values[5]));
+                    Question q = new Question(values[0], Convert.ToInt32(values[1]), distractors, Convert.ToInt32(values[6]));
                     questionsList.Add(q);
                     questAdded++;
                 }
@@ -67,7 +69,12 @@ namespace QuizGame
         }
 
     }
-    class Game
+    public interface IGame
+    {
+        void DisplayMenu(Player player);
+        int DisplayQuestion(int i);
+    }
+    public class Game : IGame
     {
         public Player player;
         public List<Question> questions;
@@ -75,32 +82,25 @@ namespace QuizGame
         public int questionQuantity;
         public int gameDifficulty;
 
-        public Game(Player player, int questionQuantity)
+        public Game(Player player)
         {
             this.player = player;
-            this.questionQuantity = questionQuantity;
             this.round = 0;
             this.gameDifficulty = 1;
         }
 
         public void readQuestions()
         {
-            FileReader fr = new FileReader(@"C:\questions.csv", questionQuantity);
+            FileReader fr = new FileReader(@"C:\Users\Denisse\Documents\2016\Aseguramiento\Proyectos\QuizGame\questions.csv", questionQuantity);
             questions = fr.readFile(gameDifficulty);
         }
-        public void rightAnswer()
-        {
-            player.score++;
-        }
 
-        static public int DisplayMenu(Player player)
+       public void DisplayMenu(Player player)
         {
             Console.WriteLine();
             Console.WriteLine("----------Welcome to the Quiz Game "+player.name+"!---------------");
             Console.WriteLine();
             Console.WriteLine("Please type in the number of questions you want to answer: ");
-            int z = Convert.ToInt32(Console.ReadLine());
-            return z;
         }
 
         public int DisplayQuestion(int i)
@@ -153,22 +153,24 @@ namespace QuizGame
             Player player1 = new Player();
             Console.WriteLine("What's your name? ");
             player1.name = Console.ReadLine();
+            Game game1 = new Game(player1);
+            game1.DisplayMenu(player1);
+            game1.questionQuantity = Convert.ToInt32(Console.ReadLine());
 
-            int questionQuantity = DisplayMenu(player1);
             Console.WriteLine();
 
-            Game game1 = new Game(player1, questionQuantity);
-            // game1.readQuestions();
-            string[] distr = new string[] { "1890", "1765", "1492", "1200"};
-            Question q1 = new Question("En que anno se conquisto America?", 3, distr, 2);
-            string[] distr2 = new string[] { "4", "5", "56", "22" };
-            Question q2 = new Question("Cuanto es 2+2?", 1, distr2, 2);
-            string[] distr3 = new string[] { "4", "5", "56", "22" };
-            Question q3 = new Question("Cual es la capital de CR?", 1, distr2, 2);
-            List<Question> listq = new List<Question>();
-            listq.Add(q1);
-            listq.Add(q2);
-            game1.questions = listq;
+            
+            game1.readQuestions();
+            //string[] distr = new string[] { "1890", "1765", "1492", "1200"};
+            //Question q1 = new Question("En que anno se conquisto America?", 3, distr, 2);
+            //string[] distr2 = new string[] { "4", "5", "56", "22" };
+            //Question q2 = new Question("Cuanto es 2+2?", 1, distr2, 2);
+            //string[] distr3 = new string[] { "4", "5", "56", "22" };
+            //Question q3 = new Question("Cual es la capital de CR?", 1, distr2, 2);
+            //List<Question> listq = new List<Question>();
+            //listq.Add(q1);
+            //listq.Add(q2);
+            //game1.questions = listq;
 
             while (game1.round < game1.questionQuantity)
             {

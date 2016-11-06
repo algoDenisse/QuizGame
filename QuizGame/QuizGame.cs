@@ -161,17 +161,6 @@ namespace QuizGame
 
             
             game1.readQuestions();
-            //string[] distr = new string[] { "1890", "1765", "1492", "1200"};
-            //Question q1 = new Question("En que anno se conquisto America?", 3, distr, 2);
-            //string[] distr2 = new string[] { "4", "5", "56", "22" };
-            //Question q2 = new Question("Cuanto es 2+2?", 1, distr2, 2);
-            //string[] distr3 = new string[] { "4", "5", "56", "22" };
-            //Question q3 = new Question("Cual es la capital de CR?", 1, distr2, 2);
-            //List<Question> listq = new List<Question>();
-            //listq.Add(q1);
-            //listq.Add(q2);
-            //game1.questions = listq;
-
             while (game1.round < game1.questionQuantity)
             {
                 int ans = game1.DisplayQuestion(game1.round);

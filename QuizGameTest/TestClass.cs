@@ -10,7 +10,7 @@ namespace QuizGameTest
     public class TestClass
     {
 
-         Player player = new Player();
+        Player player = new Player();
        
         [Test]
         public void readQuestionsTest()
@@ -67,19 +67,38 @@ namespace QuizGameTest
             player.name = "TestPlayer";
             Game game = new Game(player);
             game.questionQuantity = 2;
+            
             string[] distr = new string[] { "1890", "1765", "1492", "1200" };
             Question q1 = new Question("En que anno se conquisto America?", 3, distr, 2);
-            bool expResult = game.AddQuestion(q1);
-            Assert.That(expResult, Is.True);
+            string[] distr2 = new string[] { "4", "5", "56", "22" };
+            Question q2 = new Question("Cuanto es 2+2?", 1, distr2, 2);
+            
+            List<Question> listq = new List<Question>();
+            listq.Add(q1);
+            int initial_len = listq.Count;
+            game.questions = listq;
+            game.AddQuestion(q2);
+            Assert.That(game.questions.Count, Is.EqualTo(initial_len+1));
         }
         [Test]
         public void RemoveQuestionTest()
         {
+
             player.name = "TestPlayer";
             Game game = new Game(player);
             game.questionQuantity = 2;
-            bool expResult = game.RemoveQuestion(1);
-            Assert.That(expResult, Is.True);
+            string[] distr = new string[] { "1890", "1765", "1492", "1200" };
+            Question q1 = new Question("En que anno se conquisto America?", 3, distr, 2);
+            string[] distr2 = new string[] { "4", "5", "56", "22" };
+            Question q2 = new Question("Cuanto es 2+2?", 1, distr2, 2);
+
+            List<Question> listq = new List<Question>();
+            listq.Add(q1);
+            int initial_len = listq.Count;
+            game.questions = listq;
+            game.RemoveQuestion(q1);
+            
+            Assert.That(game.questions.Count, Is.EqualTo(initial_len-1));
         }
         [Test]
         public void EditQuestionTest()

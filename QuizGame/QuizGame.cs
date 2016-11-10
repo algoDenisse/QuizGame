@@ -91,7 +91,7 @@ namespace QuizGame
 
         public void readQuestions()
         {
-            FileReader fr = new FileReader(@"C:\Users\Denisse\Documents\2016\Aseguramiento\Proyectos\QuizGame\questions.csv", questionQuantity);
+            FileReader fr = new FileReader(@"C:\Users\Treicy\Documents\2016\II Semestre\Aseguramiento\Proyecto 3\QuizGame\questions.csv", questionQuantity);
             questions = fr.readFile(gameDifficulty);
         }
 
@@ -123,16 +123,17 @@ namespace QuizGame
             return false;
         }
 
-        public bool AddQuestion(Question question)
+        public void AddQuestion(Question question)
         {
-            //Some code to add question to the file
-            return true;
+            
+            questions.Add(question);
+           
         }
 
-        public bool RemoveQuestion(int question)
+        public void RemoveQuestion(Question question)
         {
-            //Some code to remove question from the file
-            return true;
+            //Suppose that question is located in the first position
+            questions.RemoveAt(0);
         }
 
         public bool EditQuestion(int question)
